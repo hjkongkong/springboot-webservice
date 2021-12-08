@@ -27,7 +27,13 @@ repositories {
 
 dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation'org.springframework.boot:spring-boot-starter-test'
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+    //Spring Data MongoDB와 Spring Data JPA는 유사한 부분이 있어 우선 jpa 주석처리
+   // implementation 'org.springframework.boot:spring-boot-starter-data-jpa:2.4.5'
+    implementation 'org.springframework.boot:spring-boot-starter-data-mongodb'
+
+
+
+    testImplementation'org.springframework.boot:spring-boot-starter-test'
 }
