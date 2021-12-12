@@ -37,13 +37,14 @@ public class PostsApiControllerTest {
     private PostsRepository postsRepository;
 
 
-//    @After
-//    public void tearDown() throws Exception{
-//        postsRepository.deleteAll();
-//    }
+    @After
+    public void tearDown() throws Exception{
+        // Test 코드가 끝나면 모두 삭제
+        postsRepository.deleteAll();
+    }
 
     @Test
-    public void Posts_등록된다() throws Exception{
+    public void Posts_등록() throws Exception{
         //given
         String title = "title";
         String content = "content";
@@ -101,6 +102,27 @@ public class PostsApiControllerTest {
         List<Posts> all = postsRepository.findAll();
         assertThat(all.get(0).getTitle()).isEqualTo(expectedTitle);
         assertThat(all.get(0).getContent()).isEqualTo(expectedContent);
+    }
+
+    @Test
+    public void Posts_삭제(){
+        //given
+        Posts savedPosts = postsRepository.save(Posts.builder()
+                .title("title_delete")
+                .content("content_delete")
+                .author("author_delete")
+                .build());
+
+        Long deleteId = savedPosts.getId();
+        String url = "http://localhost:"+port+"/api/v1/posts/"+deleteId;
+
+        //when
+        ResponseEntity<Long> responseEntity = restTemplate
+                .exchange(url, HttpMethod.DELETE, null,Long.class);
+
+        //then
+        assertThat(responseEntity.getStatusCode()).isEqualTo(HttpStatus.OK);
+
     }
 
 }
