@@ -1,15 +1,15 @@
 package com.example.springboot.web;
 
 import com.example.springboot.service.PostsService;
+import com.example.springboot.web.dto.PostsResponseDto;
 import com.example.springboot.web.dto.PostsSaveRequestDto;
+import com.example.springboot.web.dto.PostsUpdateRequestDto;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
-@RequiredArgsConstructor
-@RestController
+@RequiredArgsConstructor // 초기화 되지 않은 final field, @notnull이 붙은 field에 생성자 생성
+@RestController//Json 형태로 객체 데이터를 반환
 public class PostsApiController {
 
     private final PostsService postsService;
@@ -20,5 +20,14 @@ public class PostsApiController {
         return postsService.Save(requestDto);
     }
 
+    //수정
+    @PutMapping("/api/v1/posts/{id}")
+    public Long Update(@PathVariable Long id, @RequestBody PostsUpdateRequestDto requestDto){
+        return postsService.update(id, requestDto);
+    }
 
+    @GetMapping("/api/v1/posts/{id}")
+    public PostsResponseDto findById(@PathVariable Long id){
+        return postsService.findById(id);
+    }
 }
